@@ -26,4 +26,9 @@ public class ExpenseUtil {
         return expenseList;
     }
 
+    public int getLastId(List<Expense> expenseList)
+    {
+        return expenseList.getLast().getId();
+    }
+
 }

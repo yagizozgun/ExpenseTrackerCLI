@@ -13,7 +13,8 @@ public class Main {
         {
             case "add":
                 String description = String.join(" ", Arrays.copyOfRange(args, 1, args.length-1));
-                expenseManager.addExpense(description, Double.parseDouble(args[2]));
+                Double amount = Double.parseDouble(args[args.length - 1]);
+                expenseManager.addExpense(description, amount);
                 break;
             default:
                 throw new IllegalStateException("Unexpected value: " + args[0]);

@@ -16,7 +16,12 @@ public class ExpenseManager {
         try
         {
             List<Expense> expenseList = expenseUtil.getExpenseList(expenseFile);
-            expenseList.add(new Expense(description, amount));
+            Expense expense = new Expense(description, amount);
+            if (expenseList.size() > 1)
+            {
+                expense.setId(expenseUtil.getLastId(expenseList)+1);
+            }
+            expenseList.add(expense);
             expenseUtil.writeExpenseList(expenseFile, expenseList);
         } catch (IOException e) {
             throw new RuntimeException(e);

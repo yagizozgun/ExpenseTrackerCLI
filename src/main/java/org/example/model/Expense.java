@@ -1,10 +1,11 @@
 package org.example.model;
 
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class Expense {
     private int id = 1;
-    private long date;
+    private String date;
     private String description;
     private double amount;
 
@@ -13,7 +14,9 @@ public class Expense {
     public Expense(String description, double amount) {
         this.description = description;
         this.amount = amount;
-        this.date =new Date().getTime();
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        this.date = LocalDate.now().format(formatter);
     }
 
     public void setId(int id)
@@ -26,11 +29,11 @@ public class Expense {
         return id;
     }
 
-    public void setDate(long date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
-    public long getDate()
+    public String getDate()
     {
         return date;
     }
