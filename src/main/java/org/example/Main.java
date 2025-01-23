@@ -9,33 +9,75 @@ public class Main {
 
         ExpenseManager expenseManager = new ExpenseManager();
 
-        switch (args[0])
-        {
+        switch (args[0]) {
             case "add":
-                String description = String.join(" ", Arrays.copyOfRange(args, 1, args.length-1));
-                double amount = Double.parseDouble(args[args.length - 1]);
-                expenseManager.addExpense(description, amount);
+                try {
+                    if (args.length < 3) {
+                        throw new IllegalArgumentException("Usage: add <description> <amount>");
+                    }
+                    String description = String.join(" ", Arrays.copyOfRange(args, 1, args.length - 1));
+                    double amount = Double.parseDouble(args[args.length - 1]);
+                    if (amount <= 0) {
+                        throw new IllegalArgumentException("Amount must be greater than zero.");
+                    }
+                    expenseManager.addExpense(description, amount);
+                    System.out.println("Expense added successfully.");
+                } catch (NumberFormatException e) {
+                    System.err.println("Error: Amount must be a valid number.");
+                } catch (IllegalArgumentException e) {
+                    System.err.println("Error: " + e.getMessage());
+                } catch (Exception e) {
+                    System.err.println("An unexpected error occurred: " + e.getMessage());
+                }
                 break;
 
             case "list":
-                System.out.println(expenseManager.getExpenses());
+                try {
+                    System.out.println(expenseManager.getExpenses());
+                } catch (Exception e) {
+                    System.err.println("An error occurred while listing expenses: " + e.getMessage());
+                }
                 break;
 
             case "summary":
-                if (args.length == 1) {
-                    System.out.println("Total expenses: " + expenseManager.getSummary());
-                }
-                else {
-                    System.out.println("Total expenses for " + expenseManager.getMonth(Integer.parseInt(args[1])) + ": " + expenseManager.getSummary(Integer.parseInt(args[1])));
+                try {
+                    if (args.length == 1) {
+                        System.out.println("Total expenses: " + expenseManager.getSummary());
+                    } else {
+                        int month = Integer.parseInt(args[1]);
+                        if (month < 1 || month > 12) {
+                            throw new IllegalArgumentException("Month must be between 1 and 12.");
+                        }
+                        System.out.println("Total expenses for " + expenseManager.getMonth(month) + ": " + expenseManager.getSummary(month));
+                    }
+                } catch (NumberFormatException e) {
+                    System.err.println("Error: Month must be a valid number.");
+                } catch (IllegalArgumentException e) {
+                    System.err.println("Error: " + e.getMessage());
+                } catch (Exception e) {
+                    System.err.println("An unexpected error occurred: " + e.getMessage());
                 }
                 break;
 
             case "delete":
-                expenseManager.deleteExpense(Integer.parseInt(args[1]));
+                try {
+                    if (args.length != 2) {
+                        throw new IllegalArgumentException("Usage: delete <id>");
+                    }
+                    int id = Integer.parseInt(args[1]);
+                    expenseManager.deleteExpense(id);
+                    System.out.println("Expense deleted successfully.");
+                } catch (NumberFormatException e) {
+                    System.err.println("Error: ID must be a valid number.");
+                } catch (IllegalArgumentException e) {
+                    System.err.println("Error: " + e.getMessage());
+                } catch (Exception e) {
+                    System.err.println("An unexpected error occurred: " + e.getMessage());
+                }
                 break;
 
             default:
-                throw new IllegalStateException("Unexpected value: " + args[0]);
+                System.err.println("Error: Unexpected command '" + args[0] + "'. Available commands: add, list, summary, delete.");
         }
     }
 }
