@@ -1,11 +1,10 @@
 package org.example.model;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 
 public class Expense {
     private int id = 1;
-    private String date;
+    private LocalDate date = LocalDate.now();
     private String description;
     private double amount;
 
@@ -14,9 +13,6 @@ public class Expense {
     public Expense(String description, double amount) {
         this.description = description;
         this.amount = amount;
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        this.date = LocalDate.now().format(formatter);
     }
 
     public void setId(int id)
@@ -30,10 +26,10 @@ public class Expense {
     }
 
     public void setDate(String date) {
-        this.date = date;
+        this.date = LocalDate.parse(date);
     }
 
-    public String getDate()
+    public LocalDate getDate()
     {
         return date;
     }
